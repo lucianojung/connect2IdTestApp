@@ -81,21 +81,26 @@ class _TokenGenerationPageState extends State<TokenGenerationPage> {
         title: Text('Connect2Id TestApp'),
       ),
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            TextButton(
-                style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.amberAccent)),
-                onPressed: _createRequest, child: Text('Token generieren')),
-            Text(
-              _result,
-              style: Theme.of(context).textTheme.headline6,
-            ),
-            Text(
-              '$_jwtToken',
-              style: Theme.of(context).textTheme.headline4,
-            ),
-          ],
+        child: Padding(
+          padding: const EdgeInsets.all(32.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              TextButton(
+                  style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.amberAccent)),
+                  onPressed: _createRequest, child: Text('Token generieren')),
+              SizedBox(height: 32,),
+              Text(
+                _result,
+                style: Theme.of(context).textTheme.bodyText1,
+              ),
+              SizedBox(height: 32,),
+              Text(
+                '$_jwtToken',
+                style: Theme.of(context).textTheme.headline6!.copyWith(color: Colors.green),
+              ),
+            ],
+          ),
         ),
       ),
     );

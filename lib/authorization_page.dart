@@ -69,22 +69,26 @@ class _AuthorizationPageState extends State<AuthorizationPage> {
         title: Text(widget.title),
       ),
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            TextButton(
-                style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.amberAccent)),
-                onPressed: _createRequest, child: Text('Authentifizierung')),
-            Text(
-              _result,
-              style: Theme.of(context).textTheme.headline6,
-            ),
-            if(_result != '')
+        child: Padding(
+          padding: const EdgeInsets.all(32.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              TextButton(
+                  style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.amberAccent)),
+                  onPressed: _createRequest, child: Text('Authentifizierung')),
+              SizedBox(height: 32,),
               Text(
-                'Session Id: $_sid',
-                style: Theme.of(context).textTheme.headline4,
+                _result,
+                style: Theme.of(context).textTheme.bodyText1,
               ),
-          ],
+              if(_result != '')
+                Text(
+                  'Session Id: $_sid',
+                  style: Theme.of(context).textTheme.headline6,
+                ),
+            ],
+          ),
         ),
       ),
 

@@ -69,17 +69,21 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
         title: Text('Connect2Id TestApp'),
       ),
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            TextButton(
-                style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.amberAccent)),
-                onPressed: _createRequest, child: Text('Authorisierung')),
-            Text(
-              _result,
-              style: Theme.of(context).textTheme.headline6,
-            ),
-          ],
+        child: Padding(
+          padding: const EdgeInsets.all(32.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              TextButton(
+                  style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.amberAccent)),
+                  onPressed: _createRequest, child: Text('Authorisierung')),
+              SizedBox(height: 32,),
+              Text(
+                _result,
+                style: Theme.of(context).textTheme.bodyText1,
+              ),
+            ],
+          ),
         ),
       ),
       floatingActionButton: Visibility(
