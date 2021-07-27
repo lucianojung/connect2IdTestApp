@@ -86,6 +86,24 @@ class _TokenGenerationPageState extends State<TokenGenerationPage> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
+              Text(
+                _mainService.url + _subUrl,
+                style: Theme.of(context).textTheme.bodyText1,
+              ),
+              Text(
+                'json body: \n' + json.encode({
+                  "scope": [
+                    "openid",
+                    "email"
+                  ],
+                  "claims": [
+                    "email",
+                    "email_verified"
+                  ]
+                }),
+                style: Theme.of(context).textTheme.bodyText1,
+              ),
+              SizedBox(height: 32,),
               TextButton(
                   style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.amberAccent)),
                   onPressed: _createRequest, child: Text('Token generieren')),

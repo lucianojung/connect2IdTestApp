@@ -74,6 +74,17 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
+              Text(
+                _mainService.url + _subUrl,
+                style: Theme.of(context).textTheme.bodyText1,
+              ),
+              Text(
+                'json body: \n' + json.encode({
+                  "sub": "alice123"
+                }),
+                style: Theme.of(context).textTheme.bodyText1,
+              ),
+              SizedBox(height: 32,),
               TextButton(
                   style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.amberAccent)),
                   onPressed: _createRequest, child: Text('Authorisierung')),

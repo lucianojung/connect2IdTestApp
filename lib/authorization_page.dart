@@ -74,6 +74,18 @@ class _AuthorizationPageState extends State<AuthorizationPage> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
+              Text(
+                _mainService.url + _subUrl,
+                style: Theme.of(context).textTheme.bodyText1,
+              ),
+              Text(
+                'json body: \n' + json.encode({
+                  "query":
+                  "response_type=id_token&scope=openid%2020profile&client_id=$_clientId&state=af0ifjsldkj&redirect_uri=https://demo.c2id.com/oidc-client/cb"
+                }),
+                style: Theme.of(context).textTheme.bodyText1,
+              ),
+              SizedBox(height: 32,),
               TextButton(
                   style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.amberAccent)),
                   onPressed: _createRequest, child: Text('Authentifizierung')),
