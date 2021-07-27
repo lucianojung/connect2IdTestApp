@@ -87,7 +87,7 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
               SizedBox(height: 32,),
               TextButton(
                   style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.amberAccent)),
-                  onPressed: _createRequest, child: Text('Authorisierung')),
+                  onPressed: _createRequest, child: Text('Authorisiere Nutzer durch das Frontend')),
               SizedBox(height: 32,),
               Text(
                 _result,
@@ -101,7 +101,7 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
         visible: (_result != ''),
         child: FloatingActionButton(
           onPressed: _nextPage,
-          tooltip: 'NextPage',
+          tooltip: 'Next Step',
           child: Icon(Icons.arrow_forward),
         ),
       ), // This trailing comma makes auto-formatting nicer for build methods.

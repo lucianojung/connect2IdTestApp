@@ -128,7 +128,7 @@ class _TokenGenerationPageState extends State<TokenGenerationPage> {
                       backgroundColor:
                           MaterialStateProperty.all(Colors.amberAccent)),
                   onPressed: _createRequest,
-                  child: Text('Token generieren')),
+                  child: Text('finalen Token generieren')),
               SizedBox(
                 height: 32,
               ),
@@ -140,7 +140,7 @@ class _TokenGenerationPageState extends State<TokenGenerationPage> {
                 height: 32,
               ),
               Text(
-                '$_jwtToken',
+                'Token:\n$_jwtToken',
                 style: Theme.of(context)
                     .textTheme
                     .headline6!
@@ -154,7 +154,7 @@ class _TokenGenerationPageState extends State<TokenGenerationPage> {
         visible: (_result != ''),
         child: FloatingActionButton(
           onPressed: _nextPage,
-          tooltip: 'NextPage',
+          tooltip: 'Next Step',
           child: Icon(Icons.arrow_forward),
         ),
       ),
