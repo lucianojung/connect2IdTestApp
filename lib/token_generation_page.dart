@@ -40,12 +40,26 @@ class _TokenGenerationPageState extends State<TokenGenerationPage> {
     request.body = json.encode({
       "scope": [
         "openid",
-        "email"
+        "profile",
+        "email",
+        "app:admin"
       ],
       "claims": [
+        "name",
         "email",
         "email_verified"
-      ]
+      ],
+      "preset_claims": {
+        "id_token": {
+          "nickname": "SEIN Teammitglied",
+          "adress": {
+            "street": "Am Heuhaufen",
+            "number": "11",
+            "plz": "64293",
+            "city": "Darmstadt"
+          }
+        }
+      }
     });
     request.headers.addAll(headers);
 
@@ -94,12 +108,26 @@ class _TokenGenerationPageState extends State<TokenGenerationPage> {
                 'json body: \n' + json.encode({
                   "scope": [
                     "openid",
-                    "email"
+                    "profile",
+                    "email",
+                    "app:admin"
                   ],
                   "claims": [
+                    "name",
                     "email",
                     "email_verified"
-                  ]
+                  ],
+                  "preset_claims": {
+                    "id_token": {
+                      "nickname": "SEIN Teammitglied",
+                      "adress": {
+                        "street": "Am Heuhaufen",
+                        "number": "11",
+                        "plz": "64293",
+                        "city": "Darmstadt"
+                      }
+                    }
+                  }
                 }),
                 style: Theme.of(context).textTheme.bodyText1,
               ),

@@ -80,7 +80,7 @@ class _AuthenticationPageState extends State<AuthenticationPage> {
               ),
               Text(
                 'json body: \n' + json.encode({
-                  "sub": "alice123"
+                  "sub": "alice"
                 }),
                 style: Theme.of(context).textTheme.bodyText1,
               ),
