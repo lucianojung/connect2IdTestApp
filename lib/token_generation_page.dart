@@ -1,9 +1,12 @@
 import 'dart:convert';
 
+import 'package:connect2id_test/decoded_token_page.dart';
 import 'package:connect2id_test/main_service.dart';
 import 'package:flutter/material.dart';
 
 import 'package:http/http.dart' as http;
+
+import 'package:jwt_decoder/jwt_decoder.dart';
 
 class TokenGenerationPage extends StatefulWidget {
   TokenGenerationPage({Key? key, required this.sid}) : super(key: key);
@@ -38,17 +41,8 @@ class _TokenGenerationPageState extends State<TokenGenerationPage> {
     };
     var request = http.Request('PUT', url);
     request.body = json.encode({
-      "scope": [
-        "openid",
-        "profile",
-        "email",
-        "app:admin"
-      ],
-      "claims": [
-        "name",
-        "email",
-        "email_verified"
-      ],
+      "scope": ["openid", "profile", "email", "app:admin"],
+      "claims": ["name", "email", "email_verified"],
       "preset_claims": {
         "id_token": {
           "nickname": "SEIN Teammitglied",
@@ -63,29 +57,32 @@ class _TokenGenerationPageState extends State<TokenGenerationPage> {
     });
     request.headers.addAll(headers);
 
-    request.send().then((result) async {
+    request
+        .send()
+        .then((result) async {
+          http.Response.fromStream(result).then((response) {
+            if (response.statusCode == 200) {
+              print('response.body ' + response.body);
 
-    http.Response.fromStream(result).then((response) {
-      if (response.statusCode == 200) {
-        print('response.body ' + response.body);
+              Map<String, dynamic> jsonBody = jsonDecode(response.body);
+              setState(() {
+                _result = response.body;
+                String uri = jsonBody['parameters']['uri'];
+                RegExp re = RegExp(r'id_token[^&]*');
+                RegExpMatch? match = re.firstMatch(uri.toString());
+                _jwtToken = uri.substring(match!.start, match.end).substring(9);
+                print('JWT:\n' + _jwtToken);
 
-        Map<String, dynamic> jsonBody = jsonDecode(response.body);
-        setState(() {
-          _result = response.body;
-          String uri = jsonBody['parameters']['uri'];
-          RegExp re = RegExp(r'id_token[^&]*');
-          RegExpMatch? match = re.firstMatch(uri.toString());
-          _jwtToken = uri.substring(match!.start, match.end);
-          print(_jwtToken);
-        });
-
-      }
-      return response.body;
-    });
-    }).catchError((err) => print('error : '+err.toString()))
-        .whenComplete(()
-    {});
-
+                Map<String, dynamic> decodedToken =
+                    JwtDecoder.decode(_jwtToken);
+                print('Decoded Token:\n' + decodedToken.toString());
+              });
+            }
+            return response.body;
+          });
+        })
+        .catchError((err) => print('error : ' + err.toString()))
+        .whenComplete(() {});
   }
 
   @override
@@ -105,52 +102,66 @@ class _TokenGenerationPageState extends State<TokenGenerationPage> {
                 style: Theme.of(context).textTheme.bodyText1,
               ),
               Text(
-                'json body: \n' + json.encode({
-                  "scope": [
-                    "openid",
-                    "profile",
-                    "email",
-                    "app:admin"
-                  ],
-                  "claims": [
-                    "name",
-                    "email",
-                    "email_verified"
-                  ],
-                  "preset_claims": {
-                    "id_token": {
-                      "nickname": "SEIN Teammitglied",
-                      "adress": {
-                        "street": "Am Heuhaufen",
-                        "number": "11",
-                        "plz": "64293",
-                        "city": "Darmstadt"
+                'json body: \n' +
+                    json.encode({
+                      "scope": ["openid", "profile", "email", "app:admin"],
+                      "claims": ["name", "email", "email_verified"],
+                      "preset_claims": {
+                        "id_token": {
+                          "nickname": "SEIN Teammitglied",
+                          "adress": {
+                            "street": "Am Heuhaufen",
+                            "number": "11",
+                            "plz": "64293",
+                            "city": "Darmstadt"
+                          }
+                        }
                       }
-                    }
-                  }
-                }),
+                    }),
                 style: Theme.of(context).textTheme.bodyText1,
               ),
-              SizedBox(height: 32,),
+              SizedBox(
+                height: 32,
+              ),
               TextButton(
-                  style: ButtonStyle(backgroundColor: MaterialStateProperty.all(Colors.amberAccent)),
-                  onPressed: _createRequest, child: Text('Token generieren')),
-              SizedBox(height: 32,),
+                  style: ButtonStyle(
+                      backgroundColor:
+                          MaterialStateProperty.all(Colors.amberAccent)),
+                  onPressed: _createRequest,
+                  child: Text('Token generieren')),
+              SizedBox(
+                height: 32,
+              ),
               Text(
                 _result,
                 style: Theme.of(context).textTheme.bodyText1,
               ),
-              SizedBox(height: 32,),
+              SizedBox(
+                height: 32,
+              ),
               Text(
                 '$_jwtToken',
-                style: Theme.of(context).textTheme.headline6!.copyWith(color: Colors.green),
+                style: Theme.of(context)
+                    .textTheme
+                    .headline6!
+                    .copyWith(color: Colors.green),
               ),
             ],
           ),
         ),
       ),
-    );
+      floatingActionButton: Visibility(
+        visible: (_result != ''),
+        child: FloatingActionButton(
+          onPressed: _nextPage,
+          tooltip: 'NextPage',
+          child: Icon(Icons.arrow_forward),
+        ),
+      ),
+    ); // This trailing comma makes auto-formatting nicer for build methods.
   }
 
-  _nextPage() {}
+  _nextPage() {
+    Navigator.of(context).push(MaterialPageRoute(builder: (_) => DecodedTokenPage(token: _jwtToken)));
+  }
 }
